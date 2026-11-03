@@ -1,28 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Ekle
+import { FormsModule } from '@angular/forms';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { VatAddedPipe } from '../../pipes/vat-added.pipe';
+import { FilterPipe } from '../../pipes/filter-pipe.pipe';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, FormsModule, VatAddedPipe], // FormsModule ve VatAddedPipe buraya eklenecek
+  imports: [CommonModule, FormsModule, VatAddedPipe, FilterPipe],
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
   products: Product[] = [];
   dataLoaded: boolean = false;
-  searchText: string = ""; 
-filterText: string = ""; 
+  
+  // Her iki ismi de tanımlayarak çakışmaları ve hataları önlüyoruz:
+  filterText: string = "";
+  searchText: string = "";
 
-  constructor(private productService: ProductService, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private productService: ProductService, 
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params.subscribe((params: any) => {
       if (params["categoryId"]) {
         this.getProductsByCategoryId(params["categoryId"]);
       } else {
@@ -44,8 +50,8 @@ filterText: string = "";
       this.dataLoaded = true;
     });
   }
-    addToCart(product: Product) {
-    console.log("Sepete eklendi: " + product.productName);
-  }
 
+  addToCart(product: Product) {
+    console.log(product);
+  }
 }
