@@ -44,4 +44,8 @@ filterText: string = "";
       this.dataLoaded = true;
     });
   }
+    addToCart(product: Product) {
+    console.log("Sepete eklendi: " + product.productName);
+  }
+
 }

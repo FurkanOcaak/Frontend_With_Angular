@@ -14,7 +14,9 @@
   [(ngModel)]="searchText"
 />
 
-<div>{{ filterText }} aradiniz</div>
+<div *ngIf="filterText" class="alert alert-success">
+  {{ filterText }} aradiniz
+</div>
 
 <table *ngIf="dataLoaded" class="table">
   <thead>
@@ -25,14 +27,22 @@
       <th>Fiyat</th>
       <th>Kdv'li Fiyat</th>
       <th>Stok Adedi</th>
+      <th></th>
     </tr>
   </thead>
-  <tr *ngFor="let product of products">
-    <td>{{ product.productId }}</td>
-    <td>{{ product.productName | uppercase }}</td>
-    <td>{{ product.categoryId }}</td>
-    <td>{{ product.unitPrice | currency }}</td>
-    <td>{{ product.unitPrice | vatAdded: 10 | currency }}</td>
-    <td>{{ product.unitsInStock }}</td>
-  </tr>
+  <tbody>
+    <tr *ngFor="let product of products | filterPipe: filterText">
+      <td>{{ product.productId }}</td>
+      <td>{{ product.productName | uppercase }}</td>
+      <td>{{ product.categoryId }}</td>
+      <td>{{ product.unitPrice | currency }}</td>
+      <td>{{ product.unitPrice | vatAdded: 10 | currency }}</td>
+      <td>{{ product.unitsInStock }}</td>
+      <td>
+        <button (click)="addToCart(product)" class="btn btn-success-xs">
+          Sepete Ekle
+        </button>
+      </td>
+    </tr>
+  </tbody>
 </table>
