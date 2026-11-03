@@ -22,7 +22,7 @@ export class CategoryComponent implements OnInit {
   }
 
   getCategories() {
-    this.categoryService.getCategories().subscribe((response) => {
+    this.categoryService.getCategories().subscribe((response: any) => {
       this.categories = response.data;
     });
   }
@@ -36,5 +36,12 @@ export class CategoryComponent implements OnInit {
     } else {
       return 'list-group-item';
     }
-}
+  }
+    getAllCategoryClass() {
+      if (!this.currentCategory) {
+        return 'list-group-item active';
+      } else {
+        return 'list-group-item';
+      }
+    }
 }

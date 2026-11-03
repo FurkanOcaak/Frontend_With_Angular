@@ -31,14 +31,14 @@ export class ProductComponent implements OnInit {
 
   }
 getProducts() {
-this.productService.getProducts().subscribe((response) => {
+this.productService.getProducts().subscribe((response: any) => {
   this.products = response.data
   this.dataLoaded = true;
 
     })
   }
   getProductsByCategory(categoryId: number) {
-this.productService.getProductsByCategoryId(categoryId).subscribe((response) => {
+this.productService.getProductsByCategoryId(categoryId).subscribe((response: any) => {
   this.products = response.data
   this.dataLoaded = true;
 
