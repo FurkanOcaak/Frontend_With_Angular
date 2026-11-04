@@ -1,3 +1,4 @@
+import { FilterPipe } from '../../pipes/filter-pipe.pipe';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -5,7 +6,8 @@ import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { VatAddedPipe } from '../../pipes/vat-added.pipe';
-import { FilterPipe } from '../../pipes/filter-pipe.pipe';
+import { ToastrService } from 'ngx-toastr';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product',
@@ -17,14 +19,14 @@ import { FilterPipe } from '../../pipes/filter-pipe.pipe';
 export class ProductComponent implements OnInit {
   products: Product[] = [];
   dataLoaded: boolean = false;
-  
-  // Her iki ismi de tanımlayarak çakışmaları ve hataları önlüyoruz:
   filterText: string = "";
   searchText: string = "";
 
   constructor(
     private productService: ProductService, 
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private toastrService: ToastrService,
+    private cartService: CartService 
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +53,13 @@ export class ProductComponent implements OnInit {
     });
   }
 
+
   addToCart(product: Product) {
-    console.log(product);
+    if ( product.productId === 1) {
+      this.toastrService.error("Hata ! Bu ürün sepete eklenemez.");
+    }else {
+      this.toastrService.success("Ürün sepete eklendi.",product.productName);
+      this.cartService.addToCart(product);
+    }
   }
 }
