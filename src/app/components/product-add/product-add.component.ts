@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms'; // Servisler burada kalabilir
 import { ProductService } from '../../services/product.service';
 import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-product-add',
   standalone: true,
-  imports: [FormBuilder, FormGroup, Validators, FormControl],
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule // <-- Sadece ReactiveFormsModule buraya yazılır
+  ],
   templateUrl: './product-add.component.html',
-  styleUrl: './product-add.component.css'
+  styleUrls: ['./product-add.component.css']
 })
 export class ProductAddComponent implements OnInit {
 
@@ -27,20 +32,19 @@ export class ProductAddComponent implements OnInit {
     })
   }
   add(){
-    if(this.productAddForm.valid){
-    let productModel = Object.assign({},this.productAddForm.value)
+  if (this.productAddForm.valid) { 
+    let productModel = Object.assign({}, this.productAddForm.value);
     this.productService.add(productModel).subscribe(response => {
-      console.log(response);
-      this.toasterService.success(response.message,"Başarılı")
-    },responseError => {
-      console.log(responseError)
-      this.toasterService.error(responseError.error)
-    
+      this.toasterService.success(response.message, "Başarılı");
+    }, responseError => {
+      if (responseError.error.Errors && responseError.error.Errors.length > 0) {
+        for (let i = 0; i < responseError.error.Errors.length; i++) {
+          this.toasterService.error(responseError.error.Errors[i].ErrorMessage, "Doğrulama hatası");
+        }
+      }
     });
-    
-  }else{
-    this.toasterService.error("Formunuz eksik","Dikkat")
-    
+  } else {
+    this.toasterService.error("Formunuz eksik", "Dikkat");
   }
 }
 }

@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { CartSummaryComponent } from '../cart-summary/cart-summary.component'; 
 @Component({
   selector: 'app-navi',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, RouterLink, CartSummaryComponent], 
   templateUrl: './navi.component.html',
-  styleUrl: './navi.component.css'
+  styleUrls: ['./navi.component.css']
 })
-export class NaviComponent {
-
+export class NaviComponent implements OnInit {
+  constructor() {}
+  ngOnInit(): void {}
 }

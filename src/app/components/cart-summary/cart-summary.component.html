@@ -14,7 +14,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav ms-auto">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Anasayfa</a>
         </li>
@@ -32,15 +32,28 @@
           >
             Sepetiniz
           </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a *ngFor="let item of cartItems" class="dropdown-item" href="#"
-                ><span class="badge theme-danger">{{ cartItem.quantity }}</span
-                >{{ cartItem.product.productName }} (click)=
-                "removeFromCart(cartItem.product)"></a
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li *ngFor="let item of cartItems">
+              <a
+                class="dropdown-item d-flex justify-content-between align-items-center"
+                href="#"
               >
+                <div>
+                  <span class="badge bg-secondary me-2">{{
+                    item.quantity
+                  }}</span>
+                  {{ item.product.productName }}
+                </div>
+
+                <span
+                  class="badge bg-danger ms-2"
+                  (click)="removeFromCart(item.product)"
+                  >X</span
+                >
+              </a>
             </li>
-            <li><a class="dropdown-item">Sepete Git</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#">Sepete Git</a></li>
           </ul>
         </li>
       </ul>
